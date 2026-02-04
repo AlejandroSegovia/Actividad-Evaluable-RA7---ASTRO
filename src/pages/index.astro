@@ -1,5 +1,5 @@
 ---
-import "../styles.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import DogPics from "../components/DogPics.astro";
 const title = "Hello World !";
 const imageError =
@@ -9,39 +9,20 @@ const response = await res.json();
 const dogImageUrls = response?.message ?? [imageError];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>{title}</h1>
-    <DogPics urls={dogImageUrls} />
+<BaseLayout title="Home">
+  <h1>Dog Facts</h1>
+  <DogPics urls={dogImageUrls} />
 
-    <div>
-      <button id="cat-image-button">Get Cat Image</button>
-    </div>
-    <div>
-      <img id="cat-image" style="max-width: 400px; height: auto;" />
-    </div>
-  </body>
-</html>
+  <div>
+    <button id="cat-image-button">Get Cat Image</button>
+  </div>
+  <div>
+    <img id="cat-image" style="max-width: 400px; height: auto;" />
+  </div>
+  <a href="/about">Go to about page</a>
+</BaseLayout>
 
 <script>
   import { setupCatFactButton } from "./cat";
   setupCatFactButton();
-  const button = document.getElementById("cat-image-button");
-  const imageEl = document.getElementById("cat-image") as HTMLImageElement;
-
-  if (button && imageEl) {
-    button.addEventListener("click", async () => {
-      const res = await fetch("https://api.thecatapi.com/v1/images/search");
-      const data = await res.json();
-      imageEl.src = data[0].url;
-    });
-  }
 </script>
